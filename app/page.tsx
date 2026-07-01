@@ -1,45 +1,82 @@
+import Image from "next/image";
+import UploadBox from "./components/UploadBox";
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-6">
-      <div className="max-w-3xl w-full bg-slate-800 rounded-3xl p-10 shadow-2xl">
+    <main className="min-h-screen bg-slate-950 text-white">
 
-        <h1 className="text-5xl font-bold text-center text-yellow-400">
+      {/* Hero Section */}
+      <section className="text-center py-16 px-6">
+
+        <h1 className="text-6xl font-extrabold text-yellow-400">
           IYAC 2026
         </h1>
 
-        <p className="text-center mt-3 text-2xl">
+        <h2 className="text-3xl mt-4 font-semibold">
           NEXT LEVELS
+        </h2>
+
+        <p className="mt-3 text-gray-300">
+          International Youth Alive Convention
         </p>
 
-        <p className="text-center mt-2 text-gray-300">
-          Annual Youth Alive Convention
+        <p className="text-yellow-300 mt-2 text-lg">
+          August 18 – 22, 2026
         </p>
 
-        <p className="text-center mt-6">
-          Choose your language
-        </p>
+        <div className="mt-8 flex justify-center gap-4 flex-wrap">
 
-        <div className="flex justify-center gap-6 mt-6">
-
-          <button className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl">
+          <button className="bg-blue-700 hover:bg-blue-600 px-8 py-3 rounded-xl font-semibold transition">
             🇬🇧 English
           </button>
 
-          <button className="bg-red-600 hover:bg-red-700 px-8 py-3 rounded-xl">
+          <button className="bg-red-700 hover:bg-red-600 px-8 py-3 rounded-xl font-semibold transition">
             🇫🇷 Français
           </button>
 
         </div>
 
-        <div className="mt-12 text-center">
+      </section>
 
-          <button className="bg-yellow-500 hover:bg-yellow-400 text-black px-10 py-4 rounded-2xl font-bold text-xl">
-            Generate My Flyer
-          </button>
+      {/* Flyers */}
+      <section className="max-w-6xl mx-auto px-6 pb-20">
+
+        <h2 className="text-center text-3xl font-bold mb-10">
+          Choose Your Flyer
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-center">
+
+          {/* English Flyer */}
+          <div className="rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition duration-300">
+            <Image
+              src="/images/english-flyer.jpg"
+              alt="English Flyer"
+              width={350}
+              height={525}
+              loading="eager"
+              className="rounded-2xl"
+            />
+          </div>
+
+          {/* French Flyer */}
+          <div className="rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition duration-300">
+            <Image
+              src="/images/french-flyer.png"
+              alt="French Flyer"
+              width={350}
+              height={525}
+              className="rounded-2xl"
+            />
+          </div>
 
         </div>
 
-      </div>
+      </section>
+
+      {/* Upload Photo */}
+      <UploadBox />
+
     </main>
   );
 }
