@@ -1,30 +1,17 @@
 import Image from "next/image";
+import Header from "./components/Header";
 import UploadBox from "./components/UploadBox";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
 
-      {/* Hero Section */}
-      <section className="text-center py-16 px-6">
+      {/* Header */}
+      <Header />
 
-        <h1 className="text-6xl font-extrabold text-yellow-400">
-          IYAC 2026
-        </h1>
-
-        <h2 className="text-3xl mt-4 font-semibold">
-          NEXT LEVELS
-        </h2>
-
-        <p className="mt-3 text-gray-300">
-          International Youth Alive Convention
-        </p>
-
-        <p className="text-yellow-300 mt-2 text-lg">
-          August 18 – 22, 2026
-        </p>
-
-        <div className="mt-8 flex justify-center gap-4 flex-wrap">
+      {/* Language Buttons */}
+      <section className="py-8">
+        <div className="flex justify-center gap-4 flex-wrap">
 
           <button className="bg-blue-700 hover:bg-blue-600 px-8 py-3 rounded-xl font-semibold transition">
             🇬🇧 English
@@ -35,47 +22,37 @@ export default function Home() {
           </button>
 
         </div>
-
       </section>
 
-      {/* Flyers */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
+      {/* Upload */}
+      <UploadBox />
 
-        <h2 className="text-center text-3xl font-bold mb-10">
-          Choose Your Flyer
+      {/* Flyer */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+
+        <h2 className="text-3xl font-bold text-center mb-8">
+          Official AYAC Flyer
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-center">
+        <div className="flex justify-center">
 
-          {/* English Flyer */}
-          <div className="rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition duration-300">
-            <Image
-              src="/images/english-flyer.jpg"
-              alt="English Flyer"
-              width={350}
-              height={525}
-              loading="eager"
-              className="rounded-2xl"
-            />
-          </div>
-
-          {/* French Flyer */}
-          <div className="rounded-2xl overflow-hidden shadow-xl hover:scale-105 transition duration-300">
-            <Image
-              src="/images/french-flyer.png"
-              alt="French Flyer"
-              width={350}
-              height={525}
-              className="rounded-2xl"
-            />
-          </div>
+          <Image
+            src="/images/english-flyer.jpg"
+            alt="IYAC Flyer"
+            width={350}
+            height={525}
+            loading="eager"
+            className="rounded-2xl shadow-2xl"
+          />
 
         </div>
 
       </section>
 
-      {/* Upload Photo */}
-      <UploadBox />
+      {/* Footer */}
+      <footer className="border-t border-slate-800 py-8 text-center text-gray-400">
+        © 2026 WCI Cotonou Benin Republic— AYAC 2026
+      </footer>
 
     </main>
   );
