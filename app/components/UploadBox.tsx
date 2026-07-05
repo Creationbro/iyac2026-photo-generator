@@ -1,25 +1,29 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 
-export default function UploadBox() {
-  const [preview, setPreview] = useState<string | null>(null);
+type Props = {
+  onImageUpload: (file: string) => void;
+  preview: string | null;
+};
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
+export default function UploadBox({ onImageUpload, preview }: Props) {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
 
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreview(imageUrl);
-    }
-  }, []);
+      if (file) {
+        const imageUrl = URL.createObjectURL(file);
+        onImageUpload(imageUrl);
+      }
+    },
+    [onImageUpload]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: {
-      "image/*": [],
-    },
+    accept: { "image/*": [] },
     multiple: false,
     onDrop,
   });
@@ -40,13 +44,9 @@ export default function UploadBox() {
         ) : (
           <>
             <p className="text-5xl mb-4">📷</p>
-
-            <p className="text-xl font-bold">
-              Upload Your Photo
-            </p>
-
+            <p className="text-xl font-bold">Upload Your Photo</p>
             <p className="text-gray-400 mt-2">
-              Click here or drag & drop your photo
+              Click or drag & drop
             </p>
           </>
         )}
@@ -63,7 +63,6 @@ export default function UploadBox() {
           />
         </div>
       )}
-
     </div>
   );
 }
