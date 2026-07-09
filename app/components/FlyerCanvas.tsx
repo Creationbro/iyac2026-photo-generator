@@ -1,73 +1,97 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { flyerLayout } from "../lib/layout";
 
-type Props = {
-  image: string | null;
+type Language = "english" | "french";
+
+interface FlyerCanvasProps {
+  language: Language;
   fullName: string;
-  selectedLanguage: "english" | "french";
-};
+  photo: string | null;
+}
 
 export default function FlyerCanvas({
-  image,
+  language,
   fullName,
-  selectedLanguage,
-}: Props) {
-  const canvasRef = useRef<HTMLDivElement>(null);
-
+  photo,
+}: FlyerCanvasProps) {
   const template =
-    selectedLanguage === "english"
+    language === "english"
       ? "/images/english-template.png"
       : "/images/french-template.png";
 
   return (
-    <div className="flex flex-col items-center mt-10">
-
-      {/* 🖼️ Flyer Container */}
+    <div className="flex justify-center mt-10">
       <div
-        ref={canvasRef}
-        className="relative w-[350px] md:w-[500px] shadow-2xl rounded-xl overflow-hidden"
+        id="flyer"
+        className="relative w-[420px] aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl bg-black"
       >
-
-        {/* Background Template */}
+        {/* Flyer Template */}
         <Image
           src={template}
-          alt="Flyer Template"
-          width={500}
-          height={700}
-          className="w-full h-auto"
+          alt="Template"
+          fill
+          priority
+          sizes="420px"
         />
 
-        {/* 👤 Participant Photo */}
-        {image && (
-          <div className="absolute top-[35%] left-1/2 transform -translate-x-1/2">
-            <Image
-              src={image}
+        {/* Uploaded Photo */}
+        {photo && (
+          <div
+            className="absolute overflow-hidden"
+            style={{
+              left: flyerLayout.photo.left,
+              top: flyerLayout.photo.top,
+              width: flyerLayout.photo.width,
+              height: flyerLayout.photo.height,
+              transform: flyerLayout.photo.transform,
+            }}
+          >
+            <img
+              src={photo}
               alt="Participant"
-              width={180}
-              height={180}
-              className="rounded-full border-4 border-white object-cover"
+              className="w-full h-full object-cover"
+              draggable={false}
             />
           </div>
         )}
 
-        {/* 📝 Name */}
+        {/* Name */}
         {fullName && (
-          <div className="absolute bottom-10 w-full text-center">
-            <h2 className="text-white text-xl md:text-2xl font-bold drop-shadow-lg">
-              {fullName}
+          <div
+            className="absolute w-full text-center"
+            style={{
+              bottom: flyerLayout.name.bottom,
+            }}
+          >
+            <h2
+              style={{
+                fontSize: flyerLayout.name.fontSize,
+                fontWeight: "bold",
+                color: "#fff",
+                textShadow: "0 3px 10px rgba(0,0,0,.8)",
+              }}
+            >
+              {fullName.toUpperCase()}
             </h2>
+
+            <p
+              style={{
+                marginTop: "6px",
+                color: "#FFD700",
+                fontWeight: 700,
+                fontSize: "18px",
+                textShadow: "0 2px 8px rgba(0,0,0,.8)",
+              }}
+            >
+              {language === "english"
+                ? "I WILL BE THERE"
+                : "JE SERAI LÀ"}
+            </p>
           </div>
         )}
-
       </div>
-
-      {/* Helper text */}
-      <p className="text-gray-400 mt-4 text-sm text-center">
-        Preview updates automatically when you upload image or enter name
-      </p>
-
     </div>
   );
 }

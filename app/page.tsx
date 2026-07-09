@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Header from "./components/Header";
 import UserForm from "./components/UserForm";
@@ -9,9 +9,13 @@ import UploadBox from "./components/UploadBox";
 import FlyerCanvas from "./components/FlyerCanvas";
 import GenerateButton from "./components/GenerateButton";
 
+import { downloadFlyer } from "./lib/download";
+
 type Language = "english" | "french";
 
 export default function Home() {
+  const flyerRef = useRef<HTMLDivElement>(null);
+
   const [selectedLanguage, setSelectedLanguage] =
     useState<Language>("english");
 
@@ -19,34 +23,37 @@ export default function Home() {
   const [country, setCountry] = useState("");
   const [church, setChurch] = useState("");
 
-  const [image, setImage] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
+    if (!photo) {
+      alert("Please upload your photo.");
+      return;
+    }
+
     if (!fullName.trim()) {
       alert("Please enter your full name.");
       return;
     }
 
-    if (!country.trim()) {
-      alert("Please enter your country.");
-      return;
-    }
+    if (!flyerRef.current) return;
 
-    if (!image) {
-      alert("Please upload your photo.");
-      return;
-    }
+    setLoading(true);
 
-    alert("Flyer generated successfully!");
+    await downloadFlyer(
+      flyerRef.current,
+      `${fullName.replace(/\s+/g, "-")}-IYAC-2026.png`
+    );
+
+    setLoading(false);
   };
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
 
-      {/* Header */}
       <Header />
 
-      {/* User Form */}
       <UserForm
         fullName={fullName}
         country={country}
@@ -56,7 +63,6 @@ export default function Home() {
         onChurchChange={setChurch}
       />
 
-      {/* Language Selector */}
       <section className="mt-10">
         <LanguageSelector
           selectedLanguage={selectedLanguage}
@@ -64,31 +70,30 @@ export default function Home() {
         />
       </section>
 
-      {/* Upload Box */}
-      <UploadBox
-        preview={image}
-        onImageUpload={setImage}
-      />
+      <UploadBox onImageUpload={setPhoto} />
 
-      {/* Flyer Canvas */}
-      <section className="mt-12 px-6">
+      <section className="mt-10">
         <h2 className="text-center text-3xl font-bold mb-8">
           Flyer Preview
         </h2>
 
-        <FlyerCanvas
-          image={image}
-          fullName={fullName}
-          selectedLanguage={selectedLanguage}
-        />
+        <div
+          ref={flyerRef}
+          className="flex justify-center"
+        >
+          <FlyerCanvas
+            language={selectedLanguage}
+            fullName={fullName}
+            photo={photo}
+          />
+        </div>
       </section>
 
-      {/* Generate Button */}
       <GenerateButton
         onGenerate={handleGenerate}
+        loading={loading}
       />
 
-      {/* Footer */}
       <footer className="mt-16 border-t border-slate-700 py-8 text-center text-gray-400">
         © 2026 WCI COTONOU BENIN REPUBLIC — IYAC 2026
       </footer>

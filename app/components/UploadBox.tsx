@@ -1,21 +1,26 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 
-type Props = {
-  onImageUpload: (file: string) => void;
-  preview: string | null;
-};
+interface UploadBoxProps {
+  onImageUpload: (image: string) => void;
+}
 
-export default function UploadBox({ onImageUpload, preview }: Props) {
+export default function UploadBox({
+  onImageUpload,
+}: UploadBoxProps) {
+  const [preview, setPreview] = useState<string | null>(null);
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
 
       if (file) {
         const imageUrl = URL.createObjectURL(file);
+
+        setPreview(imageUrl);
         onImageUpload(imageUrl);
       }
     },
@@ -23,13 +28,15 @@ export default function UploadBox({ onImageUpload, preview }: Props) {
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: { "image/*": [] },
+    accept: {
+      "image/*": [],
+    },
     multiple: false,
     onDrop,
   });
 
   return (
-    <div className="mt-16 max-w-md mx-auto px-6 pb-20">
+    <div className="mt-16 max-w-md mx-auto px-6 pb-10">
 
       <div
         {...getRootProps()}
@@ -44,7 +51,11 @@ export default function UploadBox({ onImageUpload, preview }: Props) {
         ) : (
           <>
             <p className="text-5xl mb-4">📷</p>
-            <p className="text-xl font-bold">Upload Your Photo</p>
+
+            <p className="text-xl font-bold">
+              Upload Your Photo
+            </p>
+
             <p className="text-gray-400 mt-2">
               Click or drag & drop
             </p>
@@ -57,12 +68,13 @@ export default function UploadBox({ onImageUpload, preview }: Props) {
           <Image
             src={preview}
             alt="Preview"
-            width={250}
-            height={250}
-            className="rounded-2xl shadow-2xl object-cover"
+            width={220}
+            height={280}
+            className="rounded-xl object-cover shadow-xl"
           />
         </div>
       )}
+
     </div>
   );
 }
