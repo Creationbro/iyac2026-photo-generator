@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { flyerLayout } from "../lib/layout";
 
 type Language = "english" | "french";
@@ -9,12 +8,20 @@ interface FlyerCanvasProps {
   language: Language;
   fullName: string;
   photo: string | null;
+
+  // Photo Controls
+  scale: number;
+  offsetX: number;
+  offsetY: number;
 }
 
 export default function FlyerCanvas({
   language,
   fullName,
   photo,
+  scale,
+  offsetX,
+  offsetY,
 }: FlyerCanvasProps) {
   const template =
     language === "english"
@@ -25,33 +32,38 @@ export default function FlyerCanvas({
     <div className="flex justify-center mt-10">
       <div
         id="flyer"
-        className="relative w-[420px] aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl bg-black"
+        className="relative w-[420px] aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl bg-black"
       >
-        {/* Flyer Template */}
-        <Image
+        {/* Background */}
+        <img
           src={template}
-          alt="Template"
-          fill
-          priority
-          sizes="420px"
+          alt="Flyer Template"
+          className="absolute inset-0 w-full h-full object-cover"
+          draggable={false}
         />
 
-        {/* Uploaded Photo */}
+        {/* Participant */}
         {photo && (
           <div
             className="absolute overflow-hidden"
             style={{
               left: flyerLayout.photo.left,
-              top: flyerLayout.photo.top,
+              bottom: flyerLayout.photo.bottom,
               width: flyerLayout.photo.width,
               height: flyerLayout.photo.height,
-              transform: flyerLayout.photo.transform,
+
+              transform: `
+                translateX(-50%)
+                translate(${offsetX}px, ${offsetY}px)
+                scale(${scale})
+              `,
+              transformOrigin: "center bottom",
             }}
           >
             <img
               src={photo}
               alt="Participant"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
               draggable={false}
             />
           </div>
@@ -60,35 +72,36 @@ export default function FlyerCanvas({
         {/* Name */}
         {fullName && (
           <div
-            className="absolute w-full text-center"
+            className="absolute font-bold text-white"
             style={{
+              right: flyerLayout.name.right,
               bottom: flyerLayout.name.bottom,
+              fontSize: flyerLayout.name.fontSize,
+              textAlign: "right",
+              textShadow: "2px 2px 8px rgba(0,0,0,.9)",
+              maxWidth: "180px",
             }}
           >
-            <h2
-              style={{
-                fontSize: flyerLayout.name.fontSize,
-                fontWeight: "bold",
-                color: "#fff",
-                textShadow: "0 3px 10px rgba(0,0,0,.8)",
-              }}
-            >
-              {fullName.toUpperCase()}
-            </h2>
+            {fullName.toUpperCase()}
+          </div>
+        )}
 
-            <p
-              style={{
-                marginTop: "6px",
-                color: "#FFD700",
-                fontWeight: 700,
-                fontSize: "18px",
-                textShadow: "0 2px 8px rgba(0,0,0,.8)",
-              }}
-            >
-              {language === "english"
-                ? "I WILL BE THERE"
-                : "JE SERAI LÀ"}
-            </p>
+        {/* Tagline */}
+        {fullName && (
+          <div
+            className="absolute font-bold text-yellow-400"
+            style={{
+              right: flyerLayout.tagline.right,
+              bottom: flyerLayout.tagline.bottom,
+              fontSize: flyerLayout.tagline.fontSize,
+              textAlign: "right",
+              textShadow: "2px 2px 6px rgba(0,0,0,.9)",
+              maxWidth: "180px",
+            }}
+          >
+            {language === "english"
+              ? "I WILL BE THERE"
+              : "JE SERAI LÀ"}
           </div>
         )}
       </div>

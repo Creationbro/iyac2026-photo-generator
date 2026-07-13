@@ -1,19 +1,32 @@
 export const flyerLayout = {
+  // ===========================
+  // PARTICIPANT PHOTO (CENTER)
+  // ===========================
   photo: {
     left: "50%",
-    top: "52%",
-    width: "28%",
-    height: "34%",
+    bottom: "30px",
+    width: "170px",
+    height: "220px",
     transform: "translateX(-50%)",
   },
 
+  // ===========================
+  // PARTICIPANT NAME (RIGHT)
+  // ===========================
   name: {
-    bottom: "13%",
-    fontSize: "26px",
+    right: "18px",
+    bottom: "60px",
+    fontSize: "13px",
+    textAlign: "right",
   },
 
-  slogan: {
-    bottom: "8%",
-    fontSize: "16px",
+  // ===========================
+  // TAGLINE (RIGHT)
+  // ===========================
+  tagline: {
+    right: "20px",
+    bottom: "40px",
+    fontSize: "14px",
+    textAlign: "right",
   },
 };

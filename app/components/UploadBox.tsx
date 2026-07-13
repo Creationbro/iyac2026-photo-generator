@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
+import { removeImageBackground } from "../lib/removeBackground";
 
 interface UploadBoxProps {
   onImageUpload: (image: string) => void;
@@ -12,16 +13,38 @@ export default function UploadBox({
   onImageUpload,
 }: UploadBoxProps) {
   const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
+    async (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
 
-      if (file) {
-        const imageUrl = URL.createObjectURL(file);
+      if (!file) return;
 
-        setPreview(imageUrl);
-        onImageUpload(imageUrl);
+      try {
+        setLoading(true);
+
+        // Remove background
+        const imageWithoutBackground = await removeImageBackground(file);
+
+        setPreview(imageWithoutBackground);
+        onImageUpload(imageWithoutBackground);
+      } catch (error) {
+        console.error(error);
+        alert("Failed to remove background.");
+
+        // Fallback to original image
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          const base64 = reader.result as string;
+          setPreview(base64);
+          onImageUpload(base64);
+        };
+
+        reader.readAsDataURL(file);
+      } finally {
+        setLoading(false);
       }
     },
     [onImageUpload]
@@ -44,7 +67,17 @@ export default function UploadBox({
       >
         <input {...getInputProps()} />
 
-        {isDragActive ? (
+        {loading ? (
+          <>
+            <p className="text-yellow-400 text-xl font-bold">
+              Removing Background...
+            </p>
+
+            <p className="text-gray-400 mt-2">
+              Please wait...
+            </p>
+          </>
+        ) : isDragActive ? (
           <p className="text-yellow-400 font-semibold">
             Drop your photo here...
           </p>
@@ -57,7 +90,7 @@ export default function UploadBox({
             </p>
 
             <p className="text-gray-400 mt-2">
-              Click or drag & drop
+              Click or drag &amp; drop
             </p>
           </>
         )}
@@ -71,10 +104,10 @@ export default function UploadBox({
             width={220}
             height={280}
             className="rounded-xl object-cover shadow-xl"
+            unoptimized
           />
         </div>
       )}
-
     </div>
   );
 }
