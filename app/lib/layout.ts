@@ -3,7 +3,7 @@ export const flyerLayout = {
   // PARTICIPANT PHOTO (CENTER)
   // ===========================
   photo: {
-    left: "50%",
+    left: "28%",
     bottom: "30px",
     width: "170px",
     height: "220px",
@@ -15,8 +15,8 @@ export const flyerLayout = {
   // ===========================
   name: {
     right: "18px",
-    bottom: "60px",
-    fontSize: "13px",
+    bottom: "75px",
+    fontSize: "15px",
     textAlign: "right",
   },
 
@@ -24,8 +24,8 @@ export const flyerLayout = {
   // TAGLINE (RIGHT)
   // ===========================
   tagline: {
-    right: "20px",
-    bottom: "40px",
+    right: "33px",
+    bottom: "50px",
     fontSize: "14px",
     textAlign: "right",
   },
