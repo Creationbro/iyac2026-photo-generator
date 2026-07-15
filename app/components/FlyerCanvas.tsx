@@ -1,6 +1,6 @@
 "use client";
 
-import { flyerLayout } from "../lib/layout";
+import { flyerLayout } from "../lib/flyerLayout";
 
 type Language = "english" | "french";
 
