@@ -24,9 +24,12 @@ export default function Home() {
   const [church, setChurch] = useState("");
 
   const [photo, setPhoto] = useState<string | null>(null);
-
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+
+  // Photo Controls
+  const [scale, setScale] = useState(1);
+  const [offsetX, setOffsetX] = useState(0);
+  const [offsetY, setOffsetY] = useState(0);
 
   const handleGenerate = async () => {
     if (!photo) {
@@ -41,30 +44,14 @@ export default function Home() {
 
     if (!flyerRef.current) return;
 
-    try {
-      setLoading(true);
-      setMessage("⏳ Generating your flyer...");
+    setLoading(true);
 
-      await downloadFlyer(
-        flyerRef.current,
-        `${fullName.replace(/\s+/g, "-")}-IYAC-2026.png`
-      );
+    await downloadFlyer(
+      flyerRef.current,
+      `${fullName.replace(/\s+/g, "-")}-IYAC-2026.png`
+    );
 
-      setMessage("✅ Flyer downloaded successfully!");
-
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
-    } catch (error) {
-      console.error(error);
-      setMessage("❌ Failed to download flyer.");
-
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
   return (
@@ -103,25 +90,12 @@ export default function Home() {
             language={selectedLanguage}
             fullName={fullName}
             photo={photo}
+            scale={scale}
+            offsetX={offsetX}
+            offsetY={offsetY}
           />
         </div>
       </section>
-
-      {message && (
-        <div className="mt-6 flex justify-center">
-          <div
-            className={`px-6 py-3 rounded-lg font-semibold text-center shadow-lg ${
-              message.startsWith("✅")
-                ? "bg-green-600 text-white"
-                : message.startsWith("❌")
-                ? "bg-red-600 text-white"
-                : "bg-yellow-500 text-black"
-            }`}
-          >
-            {message}
-          </div>
-        </div>
-      )}
 
       <GenerateButton
         onGenerate={handleGenerate}

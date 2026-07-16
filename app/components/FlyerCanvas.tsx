@@ -9,7 +9,6 @@ interface FlyerCanvasProps {
   fullName: string;
   photo: string | null;
 
-  // Photo Controls
   scale: number;
   offsetX: number;
   offsetY: number;
@@ -42,21 +41,16 @@ export default function FlyerCanvas({
           draggable={false}
         />
 
-        {/* Participant */}
+        {/* Participant Photo */}
         {photo && (
           <div
-            className="absolute overflow-hidden"
+            className="absolute"
             style={{
               left: flyerLayout.photo.left,
               bottom: flyerLayout.photo.bottom,
               width: flyerLayout.photo.width,
               height: flyerLayout.photo.height,
-
-              transform: `
-                translateX(-50%)
-                translate(${offsetX}px, ${offsetY}px)
-                scale(${scale})
-              `,
+              transform: `translateX(-50%) translate(${offsetX}px, ${offsetY}px) scale(${scale})`,
               transformOrigin: "center bottom",
             }}
           >
@@ -77,7 +71,10 @@ export default function FlyerCanvas({
               right: flyerLayout.name.right,
               bottom: flyerLayout.name.bottom,
               fontSize: flyerLayout.name.fontSize,
-              textAlign: "right",
+              textAlign: flyerLayout.name.textAlign as
+                | "left"
+                | "center"
+                | "right",
               textShadow: "2px 2px 8px rgba(0,0,0,.9)",
               maxWidth: "180px",
             }}
@@ -94,7 +91,10 @@ export default function FlyerCanvas({
               right: flyerLayout.tagline.right,
               bottom: flyerLayout.tagline.bottom,
               fontSize: flyerLayout.tagline.fontSize,
-              textAlign: "right",
+              textAlign: flyerLayout.tagline.textAlign as
+                | "left"
+                | "center"
+                | "right",
               textShadow: "2px 2px 6px rgba(0,0,0,.9)",
               maxWidth: "180px",
             }}
