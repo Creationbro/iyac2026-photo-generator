@@ -45,15 +45,12 @@ export default function FlyerCanvas({
           <div
             className="absolute"
             style={{
-              left: "50%",
-              bottom: "30px",
-              width: "170px",
-              height: "220px",
-
+              left: flyerLayout.photo.left,
+              bottom: flyerLayout.photo.bottom,
+              width: flyerLayout.photo.width,
+              height: flyerLayout.photo.height,
               transform: `translateX(-50%) translate(${offsetX}px, ${offsetY}px) scale(${scale})`,
               transformOrigin: "center bottom",
-
-              border: "2px solid red",
             }}
           >
             <img
@@ -65,23 +62,21 @@ export default function FlyerCanvas({
           </div>
         )}
 
-        {/* Name */}
+        {/* Participant Name */}
         {fullName && (
           <div
-            className="absolute font-bold text-white"
+            className="absolute font-bold text-white uppercase"
             style={{
               right: flyerLayout.name.right,
               bottom: flyerLayout.name.bottom,
               fontSize: flyerLayout.name.fontSize,
-              textAlign: flyerLayout.name.textAlign as
-                | "left"
-                | "center"
-                | "right",
-              textShadow: "2px 2px 8px rgba(0,0,0,.9)",
+              textAlign:
+                flyerLayout.name.textAlign as React.CSSProperties["textAlign"],
+              textShadow: "2px 2px 8px rgba(0,0,0,0.9)",
               maxWidth: "180px",
             }}
           >
-            {fullName.toUpperCase()}
+            {fullName}
           </div>
         )}
 
@@ -93,11 +88,10 @@ export default function FlyerCanvas({
               right: flyerLayout.tagline.right,
               bottom: flyerLayout.tagline.bottom,
               fontSize: flyerLayout.tagline.fontSize,
-              textAlign: flyerLayout.tagline.textAlign as
-                | "left"
-                | "center"
-                | "right",
-              textShadow: "2px 2px 6px rgba(0,0,0,.9)",
+              textAlign:
+                flyerLayout.tagline
+                  .textAlign as React.CSSProperties["textAlign"],
+              textShadow: "2px 2px 6px rgba(0,0,0,0.9)",
               maxWidth: "180px",
             }}
           >
