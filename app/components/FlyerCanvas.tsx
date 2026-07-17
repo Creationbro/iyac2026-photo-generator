@@ -8,7 +8,6 @@ interface FlyerCanvasProps {
   language: Language;
   fullName: string;
   photo: string | null;
-
   scale: number;
   offsetX: number;
   offsetY: number;
@@ -46,12 +45,15 @@ export default function FlyerCanvas({
           <div
             className="absolute"
             style={{
-              left: flyerLayout.photo.left,
-              bottom: flyerLayout.photo.bottom,
-              width: flyerLayout.photo.width,
-              height: flyerLayout.photo.height,
+              left: "50%",
+              bottom: "30px",
+              width: "170px",
+              height: "220px",
+
               transform: `translateX(-50%) translate(${offsetX}px, ${offsetY}px) scale(${scale})`,
               transformOrigin: "center bottom",
+
+              border: "2px solid red",
             }}
           >
             <img

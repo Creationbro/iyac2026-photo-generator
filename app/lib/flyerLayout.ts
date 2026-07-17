@@ -3,7 +3,7 @@ export const flyerLayout = {
   // PARTICIPANT PHOTO (CENTER)
   // ===========================
   photo: {
-    left: "28%",
+    left: "42%",
     bottom: "30px",
     width: "170px",
     height: "220px",
